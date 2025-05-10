@@ -1,11 +1,22 @@
 import { useState } from "react";
-import { StyleSheet, TextInput, Button, Alert } from "react-native";
+import {
+  StyleSheet,
+  TextInput,
+  Button,
+  Alert,
+  useColorScheme,
+} from "react-native";
 import { Image } from "expo-image";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { useAuth } from "@/context/AuthContext";
+import { router } from "expo-router";
 
-export default function HomeScreen() {
+export default function LoginSignup() {
+  const { login } = useAuth();
+  const colorScheme = useColorScheme();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
@@ -15,6 +26,7 @@ export default function HomeScreen() {
     try {
       setLoading(true);
       const route = isLogin ? "/api/auth/login" : "/api/auth/signup";
+
       const response = await fetch(`http://192.168.188.110:3000${route}`, {
         method: "POST",
         headers: {
@@ -24,23 +36,20 @@ export default function HomeScreen() {
       });
 
       if (!response.ok) {
-        if (response.status === 404) {
-          throw new Error("Endpoint not found. Please check the API URL.");
-        } else if (response.status === 400) {
-          throw new Error("Bad Request. Please check the input data.");
-        } else {
-          throw new Error("An error occurred. Please try again.");
-        }
+        const data = await response.json();
+        throw new Error(data?.message || "Something went wrong");
       }
-      const data = await response.json();
-      Alert.alert("Success", isLogin ? "Logged in!" : "Signed up!");
-      console.log(data);
+
+      await login();
+      router.replace("/(tabs)/explore"); 
     } catch (err: any) {
       Alert.alert("Error", err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
   };
+
+  const placeholderTextColor = colorScheme === "dark" ? "#ccc" : "#888";
 
   return (
     <ParallaxScrollView
@@ -59,6 +68,7 @@ export default function HomeScreen() {
 
         <TextInput
           placeholder="Email"
+          placeholderTextColor={placeholderTextColor}
           value={email}
           onChangeText={setEmail}
           style={styles.input}
@@ -66,6 +76,7 @@ export default function HomeScreen() {
         />
         <TextInput
           placeholder="Password"
+          placeholderTextColor={placeholderTextColor}
           value={password}
           onChangeText={setPassword}
           style={styles.input}
@@ -101,6 +112,7 @@ const styles = StyleSheet.create({
     borderColor: "#999",
     padding: 12,
     borderRadius: 10,
+    color: "#fff", 
   },
   switchText: {
     textAlign: "center",
