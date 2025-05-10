@@ -41,7 +41,7 @@ export default function LoginSignup() {
       }
 
       await login();
-      router.replace("/(tabs)/explore"); 
+      router.replace("/(tabs)"); 
     } catch (err: any) {
       Alert.alert("Error", err.message || "Something went wrong");
     } finally {
