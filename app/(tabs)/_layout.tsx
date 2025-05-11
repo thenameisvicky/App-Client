@@ -31,7 +31,7 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            <IconSymbol size={28} name="house.fill" color={color} />
           ),
         }}
       />
@@ -40,7 +40,7 @@ export default function TabLayout() {
         options={{
           title: "Vehicles",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="chevron.right" color={color} />
+            <IconSymbol size={28} name="car.fill" color={color} />
           ),
         }}
       />
@@ -49,7 +49,7 @@ export default function TabLayout() {
         options={{
           title: "Logs",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="chevron.right" color={color} />
+            <IconSymbol size={28} name="doc.text.magnifyingglass" color={color} />
           ),
         }}
       />
@@ -58,7 +58,7 @@ export default function TabLayout() {
         options={{
           title: "Location",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="chevron.right" color={color} />
+            <IconSymbol size={28} name="location.fill" color={color} />
           ),
         }}
       />
@@ -67,7 +67,7 @@ export default function TabLayout() {
         options={{
           title: "Settings",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="chevron.right" color={color} />
+            <IconSymbol size={28} name="gearshape.fill" color={color} />
           ),
         }}
       />
