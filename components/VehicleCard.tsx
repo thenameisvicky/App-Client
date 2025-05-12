@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     alignItems: "center",
     justifyContent: "space-between",
-    width: "100%",
+    width: 400,
   },
   imagePlaceholder: {
     width: 70,
