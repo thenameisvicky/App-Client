@@ -89,7 +89,7 @@ export default function RegisterVehicleScreen() {
         headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
         headerImage={
           <Image
-            source={require("@/assets/images/partial-react-logo.png")}
+            source={require("@/assets/images/CollegeProjectHero1.jpg")}
             style={styles.reactLogo}
           />
         }
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginBottom: 20,
   },
-  cardsContainer: { gap: 20 },
+  cardsContainer: { gap: 20, alignSelf: "center" },
   fab: {
     position: "absolute",
     bottom: 24,
@@ -192,8 +192,8 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   reactLogo: {
-    height: 178,
-    width: 290,
+    height: 210,
+    width: 1500,
     bottom: 0,
     left: 0,
     position: "absolute",
