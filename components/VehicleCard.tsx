@@ -4,16 +4,16 @@ import { Ionicons } from "@expo/vector-icons";
 
 type VehicleCardProps = {
   name: string;
-  location: string;
-  distance: string;
+  number?: string;
+  dateAdded?: string;
   selected: boolean;
   onSelect: () => void;
 };
 
 export function VehicleCard({
   name,
-  location,
-  distance,
+  number,
+  dateAdded,
   selected,
   onSelect,
 }: VehicleCardProps) {
@@ -22,8 +22,8 @@ export function VehicleCard({
       <View style={styles.imagePlaceholder} />
       <View style={styles.info}>
         <Text style={styles.name}>{name}</Text>
-        <Text style={styles.location}>📍 {location}</Text>
-        <Text style={styles.distance}>{distance} away</Text>
+        <Text style={styles.distance}>{dateAdded}</Text>
+        <Text style={styles.location}>{number}</Text>
       </View>
       <Ionicons
         name={selected ? "checkbox" : "square-outline"}
