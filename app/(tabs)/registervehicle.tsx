@@ -10,37 +10,103 @@ import Tooltip from "react-native-walkthrough-tooltip";
 export default function RegisterVehicleScreen() {
   const [vehicles, setVehicles] = useState([
     {
-      id: "1",
-      name: "Tesla Model 3",
-      location: "San Jose",
-      distance: "2.1 km",
+      email: "user1@example.com",
+      vin: "TN01AB1234VIN",
+      make: "Maruti",
+      model: "Alto",
+      date: "2023-10-01",
+      location: "Guindy, Chennai",
+      speed: 0,
+      status: "parked",
     },
     {
-      id: "2",
-      name: "Chevrolet Bolt",
-      location: "Oakland",
-      distance: "4.8 km",
+      email: "user2@example.com",
+      vin: "TN09CD5678VIN",
+      make: "Hyundai",
+      model: "i20",
+      date: "2023-10-01",
+      location: "Velachery, Chennai",
+      speed: 45,
+      status: "moving",
     },
     {
-      id: "3",
-      name: "Nissan Leaf",
-      location: "Sacramento",
-      distance: "10.2 km",
-    },
-    { id: "4", name: "BMW i3", location: "Los Angeles", distance: "7.3 km" },
-    { id: "5", name: "Rivian R1T", location: "Fremont", distance: "12.6 km" },
-    { id: "6", name: "Lucid Air", location: "Palo Alto", distance: "3.7 km" },
-    {
-      id: "7",
-      name: "Ford F-150 Lightning",
-      location: "Sunnyvale",
-      distance: "6.9 km",
+      email: "user3@example.com",
+      vin: "TN10EF9012VIN",
+      make: "Tata",
+      model: "Nexon",
+      date: "2023-10-01",
+      location: "Coimbatore",
+      speed: 0,
+      status: "idle",
     },
     {
-      id: "8",
-      name: "Hyundai Ioniq 5",
-      location: "Berkeley",
-      distance: "5.2 km",
+      email: "user4@example.com",
+      vin: "TN12GH3456VIN",
+      make: "Mahindra",
+      model: "XUV700",
+      date: "2023-10-01",
+      location: "Madurai",
+      speed: 0,
+      status: "parked",
+    },
+    {
+      email: "user5@example.com",
+      vin: "TN14IJ7890VIN",
+      make: "Kia",
+      model: "Seltos",
+      date: "2023-10-01",
+      location: "Tiruchirapalli",
+      speed: 65,
+      status: "moving",
+    },
+    {
+      email: "user6@example.com",
+      vin: "TN16KL2345VIN",
+      make: "Honda",
+      model: "City",
+      location: "Salem",
+      speed: 0,
+      status: "idle",
+    },
+    {
+      email: "user7@example.com",
+      vin: "TN18MN6789VIN",
+      make: "Toyota",
+      model: "Innova",
+      date: "2023-10-01",
+      location: "Erode",
+      speed: 50,
+      status: "moving",
+    },
+    {
+      email: "user8@example.com",
+      vin: "TN20OP1234VIN",
+      make: "Ford",
+      model: "EcoSport",
+      date: "2023-10-01",
+      location: "Vellore",
+      speed: 0,
+      status: "parked",
+    },
+    {
+      email: "user9@example.com",
+      vin: "TN22QR5678VIN",
+      make: "Renault",
+      model: "Kwid",
+      date: "2023-10-01",
+      location: "Nagercoil",
+      speed: 0,
+      status: "idle",
+    },
+    {
+      email: "user10@example.com",
+      vin: "TN24ST9012VIN",
+      make: "MG",
+      model: "Astor",
+      date: "2023-10-01",
+      location: "Thanjavur",
+      speed: 70,
+      status: "moving",
     },
   ]);
 
@@ -68,7 +134,7 @@ export default function RegisterVehicleScreen() {
           method: "DELETE",
         });
       }
-      setVehicles((prev) => prev.filter((v) => !selectedIds.includes(v.id)));
+      setVehicles((prev) => prev.filter((v) => !selectedIds.includes(v.vin)));
       setSelectedIds([]);
     } catch (err) {
       Alert.alert("Error", "Failed to delete vehicles.");
@@ -79,7 +145,7 @@ export default function RegisterVehicleScreen() {
     if (selectedIds.length === vehicles.length) {
       setSelectedIds([]);
     } else {
-      setSelectedIds(vehicles.map((v) => v.id));
+      setSelectedIds(vehicles.map((v) => v.vin));
     }
   };
 
@@ -102,12 +168,12 @@ export default function RegisterVehicleScreen() {
           <View style={styles.cardsContainer}>
             {vehicles.map((v) => (
               <VehicleCard
-                key={v.id}
-                name={v.name}
-                location={v.location}
-                distance={v.distance}
-                selected={selectedIds.includes(v.id)}
-                onSelect={() => toggleSelection(v.id)}
+                key={v.vin}
+                number={v.vin}
+                name={v.make + " " + v.model}
+                dateAdded={v.date}
+                selected={selectedIds.includes(v.vin)}
+                onSelect={() => toggleSelection(v.vin)}
               />
             ))}
           </View>
