@@ -29,8 +29,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const login = async () => {
-    await SecureStore.setItemAsync("auth_token", "true");
     setIsAuthenticated(true);
+    await SecureStore.setItemAsync("auth_token", "true");
   };
 
   const logout = async () => {

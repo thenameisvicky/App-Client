@@ -25,23 +25,24 @@ export default function LoginSignup() {
   const handleAuth = async () => {
     try {
       setLoading(true);
-      // const route = isLogin ? "/api/auth/login" : "/api/auth/signup";
+      const route = isLogin ? "/api/auth/login" : "/api/auth/signup";
 
-      // const response = await fetch(`http://192.168.188.110:3000${route}`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ email, password }),
-      // });
+      const response = await fetch(`http://192.168.188.110:3000${route}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-      // if (!response.ok) {
-      //   const data = await response.json();
-      //   throw new Error(data?.message || "Something went wrong");
-      // }
+      if (!response.ok) {
+        await login();
+        const data = await response.json();
+        throw new Error(data?.message || "Something went wrong");
+      }
 
-      // await login();
-      router.replace("/(tabs)"); 
+      await login();
+      router.replace("/(tabs)");
     } catch (err: any) {
       Alert.alert("Error", err.message || "Something went wrong");
     } finally {
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     borderColor: "#999",
     padding: 12,
     borderRadius: 10,
-    color: "#fff", 
+    color: "#fff",
   },
   switchText: {
     textAlign: "center",
