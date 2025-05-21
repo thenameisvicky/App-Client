@@ -1,11 +1,12 @@
 import { ThemedText } from "@/components/ThemedText";
 import { VehicleCard } from "@/components/VehicleCard";
 import React, { useState } from "react";
-import { StyleSheet, View, TouchableOpacity, Alert } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Alert, Modal } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import Tooltip from "react-native-walkthrough-tooltip";
+import { AdviceModal } from "@/components/Modal";
 
 export default function RegisterVehicleScreen() {
   const [vehicles, setVehicles] = useState([
@@ -112,12 +113,18 @@ export default function RegisterVehicleScreen() {
 
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleSelection = (id: string) => {
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
   };
+
+  const handleSaveVehicle = (vehicle: typeof vehicles[number]) => {
+    setVehicles((prev) => [...prev, vehicle]);
+  };
+
 
   const handleDelete = async () => {
     const confirmed = await new Promise((resolve) =>
@@ -177,9 +184,18 @@ export default function RegisterVehicleScreen() {
               />
             ))}
           </View>
+          {isModalOpen && (
+            <AdviceModal
+              visible={isModalOpen}
+              onClose={() => { setIsModalOpen(false) }}
+              onSave={handleSaveVehicle}
+              isVehicleAdd={true}
+              advice="test modal"
+            />
+          )}
         </View>
       </ParallaxScrollView>
-      <TouchableOpacity style={styles.fab} onPress={() => {}}>
+      <TouchableOpacity style={styles.fab} onPress={() => { setIsModalOpen(true) }}>
         <Ionicons name="add" size={32} color="white" />
       </TouchableOpacity>
       <Tooltip
