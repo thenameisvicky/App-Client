@@ -1,0 +1,8 @@
+--------------------------------------------------CLIENT AND BACKEND-------------------------------------------------------------------------------
+1. User uploads image need to be stored as URI in db 
+2. User that logins need to be in the settings
+3. Move all Hardcoded stuffs in UI to DB and sync
+4. Implement Auto location Detecting  feature
+5. Add a Proxy violation request in UI 
+6. Initialize new DB for TWIN and connect to DB only when accessing it (PROXY-ERROR-CASE)
+7. Move the original there and TWIN to main DB.
