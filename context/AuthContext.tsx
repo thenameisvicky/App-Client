@@ -21,8 +21,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     const load = async () => {
-      const token = await SecureStore.getItemAsync("auth_token");
-      setIsAuthenticated(!!token);
+      // const token = await SecureStore.getItemAsync("auth_token");
+      // setIsAuthenticated(!!token);
       setLoading(false);
     };
     load();

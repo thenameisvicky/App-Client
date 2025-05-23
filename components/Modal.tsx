@@ -11,6 +11,7 @@ import {
   ScrollView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useEffect } from "react";
 
 type Vehicle = {
   email: string;
@@ -41,32 +42,50 @@ export const AdviceModal = ({
   const theme = useColorScheme();
   const isDark = theme === "dark";
 
+  useEffect(() => {
+    if (visible && isVehicleAdd) {
+      setVin((prev) => prev || "1HGCM82633A123456");
+      setMake((prev) => prev || "Toyota");
+      setModel((prev) => prev || "Corolla");
+      setLocation((prev) => prev || "San Francisco, CA");
+    }
+  }, [visible, isVehicleAdd]);
+
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [vin, setVin] = useState("");
   const [location, setLocation] = useState("");
 
-  const handleSave = () => {
-    const newVehicle: Vehicle = {
-      email: "",
-      vin,
-      make,
-      model,
-      location,
-      speed: 0,
-      status: "parked",
-      date: new Date().toISOString().split("T")[0],
-    };
-    onSave(newVehicle);
-    onClose();
-    setMake("");
-    setModel("");
-    setVin("");
-    setLocation("");
+  const handleSave = async () => {
+    try {
+      const newVehicle: Vehicle = {
+        email: "goldroger@gmail.com",
+        vin,
+        make,
+        model,
+        location,
+        speed: 0,
+        status: "parked",
+        date: new Date().toISOString().split("T")[0],
+      };
+      await onSave(newVehicle);
+      onClose();
+      setMake("");
+      setModel("");
+      setVin("");
+      setLocation("");
+    } catch (error) {
+      console.error(`[ERROR]-Erro Saving Vehicle:`, error);
+    }
   };
 
   return (
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="fade"
+      onRequestClose={onClose}
+    >
       <View style={styles.overlay}>
         <View
           style={[
@@ -82,75 +101,111 @@ export const AdviceModal = ({
               {isVehicleAdd ? "Add New Vehicle" : "Advice"}
             </Text>
             <TouchableOpacity onPress={onClose}>
-              <Ionicons name="close" size={24} color={isDark ? "#FFF" : "#000"} />
+              <Ionicons
+                name="close"
+                size={24}
+                color={isDark ? "#FFF" : "#000"}
+              />
             </TouchableOpacity>
           </View>
           <ScrollView style={styles.body} showsVerticalScrollIndicator={false}>
             {isVehicleAdd ? (
               <>
                 <View style={styles.inputGroup}>
-                  <Text style={[styles.label, { color: isDark ? "#BBB" : "#555" }]}>VIN</Text>
+                  <Text
+                    style={[styles.label, { color: isDark ? "#BBB" : "#555" }]}
+                  >
+                    VIN
+                  </Text>
                   <TextInput
                     placeholder="Enter VIN"
                     value={vin}
                     onChangeText={setVin}
                     style={[
                       styles.input,
-                      { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7", color: isDark ? "#FFF" : "#000" },
+                      {
+                        backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7",
+                        color: isDark ? "#FFF" : "#000",
+                      },
                     ]}
                     placeholderTextColor={isDark ? "#888" : "#999"}
                   />
                 </View>
 
                 <View style={styles.inputGroup}>
-                  <Text style={[styles.label, { color: isDark ? "#BBB" : "#555" }]}>Make</Text>
+                  <Text
+                    style={[styles.label, { color: isDark ? "#BBB" : "#555" }]}
+                  >
+                    Make
+                  </Text>
                   <TextInput
                     placeholder="Enter Make"
                     value={make}
                     onChangeText={setMake}
                     style={[
                       styles.input,
-                      { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7", color: isDark ? "#FFF" : "#000" },
+                      {
+                        backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7",
+                        color: isDark ? "#FFF" : "#000",
+                      },
                     ]}
                     placeholderTextColor={isDark ? "#888" : "#999"}
                   />
                 </View>
 
                 <View style={styles.inputGroup}>
-                  <Text style={[styles.label, { color: isDark ? "#BBB" : "#555" }]}>Model</Text>
+                  <Text
+                    style={[styles.label, { color: isDark ? "#BBB" : "#555" }]}
+                  >
+                    Model
+                  </Text>
                   <TextInput
                     placeholder="Enter Model"
                     value={model}
                     onChangeText={setModel}
                     style={[
                       styles.input,
-                      { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7", color: isDark ? "#FFF" : "#000" },
+                      {
+                        backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7",
+                        color: isDark ? "#FFF" : "#000",
+                      },
                     ]}
                     placeholderTextColor={isDark ? "#888" : "#999"}
                   />
                 </View>
 
                 <View style={styles.inputGroup}>
-                  <Text style={[styles.label, { color: isDark ? "#BBB" : "#555" }]}>Location</Text>
+                  <Text
+                    style={[styles.label, { color: isDark ? "#BBB" : "#555" }]}
+                  >
+                    Location
+                  </Text>
                   <TextInput
                     placeholder="Enter Location"
                     value={location}
                     onChangeText={setLocation}
                     style={[
                       styles.input,
-                      { backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7", color: isDark ? "#FFF" : "#000" },
+                      {
+                        backgroundColor: isDark ? "#2C2C2E" : "#F2F2F7",
+                        color: isDark ? "#FFF" : "#000",
+                      },
                     ]}
                     placeholderTextColor={isDark ? "#888" : "#999"}
                   />
                 </View>
               </>
             ) : (
-              <Text style={{ color: isDark ? "#EEE" : "#333", fontSize: 16 }}>{advice}</Text>
+              <Text style={{ color: isDark ? "#EEE" : "#333", fontSize: 16 }}>
+                {advice}
+              </Text>
             )}
           </ScrollView>
           {isVehicleAdd && (
             <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-              <Text style={{ color: "#FFF", fontWeight: "bold", fontSize: 16 }}>Save Vehicle</Text>
+              <Text style={{ color: "#FFF", fontWeight: "bold", fontSize: 16 }}>
+                Save Vehicle
+              </Text>
             </TouchableOpacity>
           )}
         </View>

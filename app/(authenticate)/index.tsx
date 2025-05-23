@@ -27,7 +27,7 @@ export default function LoginSignup() {
       setLoading(true);
       const route = isLogin ? "/api/auth/login" : "/api/auth/signup";
 
-      const response = await fetch(`http://192.168.188.110:3000${route}`, {
+      const response = await fetch(`http://192.168.1.154:3000${route}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

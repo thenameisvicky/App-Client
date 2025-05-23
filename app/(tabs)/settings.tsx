@@ -138,7 +138,7 @@ export default function SettingsScreen() {
 
           <TouchableOpacity
             style={styles.item}
-            onPress={() => router.push('/(tabs)/registervehicle')}
+            onPress={() => router.push("/(tabs)/registervehicle")}
           >
             <View style={styles.labelRow}>
               <ThemedText type="defaultSemiBold" style={styles.label}>
@@ -219,12 +219,12 @@ const styles = StyleSheet.create({
   avatarWrapper: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: 'black',
-    padding: 20
+    backgroundColor: "black",
+    padding: 50,
   },
   avatar: {
-    width: 220,
-    height: 220,
+    width: 200,
+    height: 200,
     borderRadius: 120,
     borderWidth: 3,
     borderColor: "#fff",

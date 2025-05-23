@@ -1,13 +1,20 @@
 import { ThemedText } from "@/components/ThemedText";
 import { VehicleCard } from "@/components/VehicleCard";
 import React, { useState } from "react";
-import { StyleSheet, View, TouchableOpacity, Alert, Modal, Platform } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Alert,
+  Modal,
+  Platform,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import Tooltip from "react-native-walkthrough-tooltip";
 import { AdviceModal } from "@/components/Modal";
-import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from "expo-image-picker";
 
 export default function RegisterVehicleScreen() {
   const [vehicles, setVehicles] = useState([
@@ -123,10 +130,9 @@ export default function RegisterVehicleScreen() {
     );
   };
 
-  const handleSaveVehicle = async (vehicle: typeof vehicles[number]) => {
-
-    const route = "/api/vehicles/add"
-    const response = await fetch(`http://192.168.188.110:3000${route}`, {
+  const handleSaveVehicle = async (vehicle: (typeof vehicles)[number]) => {
+    const route = "/api/vehicles/add";
+    const response = await fetch(`http://192.168.1.154:3000${route}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -140,7 +146,6 @@ export default function RegisterVehicleScreen() {
 
     setVehicles((prev) => [...prev, vehicle]);
   };
-
 
   const handleDelete = async () => {
     const confirmed = await new Promise((resolve) =>
@@ -196,13 +201,15 @@ export default function RegisterVehicleScreen() {
     }
   };
 
-
   return (
     <View style={styles.page}>
       <ParallaxScrollView
         headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
         headerImage={
-          <TouchableOpacity onPress={pickHeaderImage} style={styles.headerImageWrapper}>
+          <TouchableOpacity
+            onPress={pickHeaderImage}
+            style={styles.headerImageWrapper}
+          >
             {headerImageUri ? (
               <Image
                 source={{ uri: headerImageUri as string }}
@@ -212,7 +219,10 @@ export default function RegisterVehicleScreen() {
             ) : (
               <View style={styles.uploadPlaceholder}>
                 <Ionicons name="cloud-upload-outline" size={48} color="#ccc" />
-                <ThemedText type="default" style={{ color: "#888", marginTop: 8 }}>
+                <ThemedText
+                  type="default"
+                  style={{ color: "#888", marginTop: 8 }}
+                >
                   Upload Cover
                 </ThemedText>
               </View>
@@ -240,7 +250,9 @@ export default function RegisterVehicleScreen() {
           {isModalOpen && (
             <AdviceModal
               visible={isModalOpen}
-              onClose={() => { setIsModalOpen(false) }}
+              onClose={() => {
+                setIsModalOpen(false);
+              }}
               onSave={handleSaveVehicle}
               isVehicleAdd={true}
               advice="test modal"
@@ -248,7 +260,12 @@ export default function RegisterVehicleScreen() {
           )}
         </View>
       </ParallaxScrollView>
-      <TouchableOpacity style={styles.fab} onPress={() => { setIsModalOpen(true) }}>
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => {
+          setIsModalOpen(true);
+        }}
+      >
         <Ionicons name="add" size={32} color="white" />
       </TouchableOpacity>
       <Tooltip
@@ -346,7 +363,7 @@ const styles = StyleSheet.create({
   },
   reactLogo: {
     width: "100%",
-    height: 210,
+    height: 250,
   },
   uploadPlaceholder: {
     width: "100%",
@@ -358,5 +375,4 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderStyle: "dashed",
   },
-
 });
