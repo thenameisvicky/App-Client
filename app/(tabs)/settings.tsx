@@ -44,6 +44,7 @@ export default function SettingsScreen() {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
+      aspect: [4, 4],
       quality: 1,
     });
 
@@ -218,12 +219,13 @@ const styles = StyleSheet.create({
   avatarWrapper: {
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 100,
+    backgroundColor: 'black',
+    padding: 20
   },
   avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: 220,
+    height: 220,
+    borderRadius: 120,
     borderWidth: 3,
     borderColor: "#fff",
     backgroundColor: "#eee",

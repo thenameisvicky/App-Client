@@ -1,11 +1,13 @@
 import { ThemedText } from "@/components/ThemedText";
 import { VehicleCard } from "@/components/VehicleCard";
 import React, { useState } from "react";
-import { StyleSheet, View, TouchableOpacity, Alert } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Alert, Modal, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import Tooltip from "react-native-walkthrough-tooltip";
+import { AdviceModal } from "@/components/Modal";
+import * as ImagePicker from 'expo-image-picker';
 
 export default function RegisterVehicleScreen() {
   const [vehicles, setVehicles] = useState([
@@ -112,12 +114,33 @@ export default function RegisterVehicleScreen() {
 
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [headerImageUri, setHeaderImageUri] = useState<string | null>(null);
 
   const toggleSelection = (id: string) => {
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
   };
+
+  const handleSaveVehicle = async (vehicle: typeof vehicles[number]) => {
+
+    const route = "/api/vehicles/add"
+    const response = await fetch(`http://192.168.188.110:3000${route}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ vehicle }),
+    });
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data?.message || "Something went wrong");
+    }
+
+    setVehicles((prev) => [...prev, vehicle]);
+  };
+
 
   const handleDelete = async () => {
     const confirmed = await new Promise((resolve) =>
@@ -130,8 +153,9 @@ export default function RegisterVehicleScreen() {
 
     try {
       for (const id of selectedIds) {
-        await fetch(`http://your-api.com/api/vehicles/${id}`, {
+        await fetch(`http://your-api.com/api/vehicles/delete`, {
           method: "DELETE",
+          body: id,
         });
       }
       setVehicles((prev) => prev.filter((v) => !selectedIds.includes(v.vin)));
@@ -149,15 +173,51 @@ export default function RegisterVehicleScreen() {
     }
   };
 
+  const pickHeaderImage = async () => {
+    const permissionResult =
+      Platform.OS !== "web"
+        ? await ImagePicker.requestMediaLibraryPermissionsAsync()
+        : { granted: true };
+
+    if (!permissionResult.granted) {
+      alert("Permission to access gallery is required!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 2],
+      quality: 1,
+    });
+
+    if (!result.canceled && result.assets.length > 0) {
+      setHeaderImageUri(result.assets[0].uri);
+    }
+  };
+
+
   return (
     <View style={styles.page}>
       <ParallaxScrollView
         headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
         headerImage={
-          <Image
-            source={require("@/assets/images/CollegeProjectHero1.jpg")}
-            style={styles.reactLogo}
-          />
+          <TouchableOpacity onPress={pickHeaderImage} style={styles.headerImageWrapper}>
+            {headerImageUri ? (
+              <Image
+                source={{ uri: headerImageUri as string }}
+                style={styles.reactLogo}
+                contentFit="cover"
+              />
+            ) : (
+              <View style={styles.uploadPlaceholder}>
+                <Ionicons name="cloud-upload-outline" size={48} color="#ccc" />
+                <ThemedText type="default" style={{ color: "#888", marginTop: 8 }}>
+                  Upload Cover
+                </ThemedText>
+              </View>
+            )}
+          </TouchableOpacity>
         }
       >
         <View style={styles.container}>
@@ -177,9 +237,18 @@ export default function RegisterVehicleScreen() {
               />
             ))}
           </View>
+          {isModalOpen && (
+            <AdviceModal
+              visible={isModalOpen}
+              onClose={() => { setIsModalOpen(false) }}
+              onSave={handleSaveVehicle}
+              isVehicleAdd={true}
+              advice="test modal"
+            />
+          )}
         </View>
       </ParallaxScrollView>
-      <TouchableOpacity style={styles.fab} onPress={() => {}}>
+      <TouchableOpacity style={styles.fab} onPress={() => { setIsModalOpen(true) }}>
         <Ionicons name="add" size={32} color="white" />
       </TouchableOpacity>
       <Tooltip
@@ -257,13 +326,6 @@ const styles = StyleSheet.create({
     elevation: 5,
     zIndex: 999,
   },
-  reactLogo: {
-    height: 210,
-    width: 1500,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-  },
   selectAllButton: {
     position: "absolute",
     bottom: 100,
@@ -277,4 +339,24 @@ const styles = StyleSheet.create({
     elevation: 5,
     zIndex: 999,
   },
+  headerImageWrapper: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+  },
+  reactLogo: {
+    width: "100%",
+    height: 210,
+  },
+  uploadPlaceholder: {
+    width: "100%",
+    height: 210,
+    backgroundColor: "#f0f0f0",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderStyle: "dashed",
+  },
+
 });

@@ -36,12 +36,13 @@ export default function LoginSignup() {
       });
 
       if (!response.ok) {
+        await login();
         const data = await response.json();
         throw new Error(data?.message || "Something went wrong");
       }
 
       await login();
-      router.replace("/(tabs)"); 
+      router.replace("/(tabs)");
     } catch (err: any) {
       Alert.alert("Error", err.message || "Something went wrong");
     } finally {
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     borderColor: "#999",
     padding: 12,
     borderRadius: 10,
-    color: "#fff", 
+    color: "#fff",
   },
   switchText: {
     textAlign: "center",
